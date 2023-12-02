@@ -25,7 +25,7 @@ def calculate_part_2(inputs: list[str]) -> int:
 def main() -> None:
     inputs = get_input()
     print(calculate_part_1(inputs))
-    print(calculate_part_1(inputs))
+    print(calculate_part_2(inputs))
 
 
 if __name__ == "__main__":
