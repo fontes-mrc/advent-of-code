@@ -8,10 +8,12 @@ def get_input() -> list:
     with open(dir_ / "input.txt") as f:
         return f.readlines()
 
+
 def split_game(game: str) -> tuple[int, list[list[str]]]:
     game_id = int(game.split(":")[0].split(" ")[1])
     sets = [item.strip().split(" ") for item in re.split("; |, ", game.split(":")[1])]
     return game_id, sets
+
 
 def calculate_part_1(inputs: str) -> int:
     n = 0
@@ -37,21 +39,22 @@ def calculate_part_1(inputs: str) -> int:
         n += game_id if valid_game else 0
     return n
 
+
 def calculate_part_2(inputs: str) -> int:
     n = 0
 
     for input in inputs:
         max_ = {}
         _, sets = split_game(input)
-    
+
         for set in sets:
             qtd = int(set[0])
             color = set[1]
             max_[color] = max(max_.get(color, 0), qtd)
 
-        power_ = reduce((lambda x,y: x*y), max_.values())
+        power_ = reduce((lambda x, y: x * y), max_.values())
         n += power_
-    
+
     return n
 
 
@@ -59,6 +62,7 @@ def main() -> None:
     inputs = get_input()
     print(calculate_part_1(inputs))
     print(calculate_part_2(inputs))
+
 
 if __name__ == "__main__":
     main()
