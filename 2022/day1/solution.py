@@ -22,7 +22,7 @@ def main() -> None:
 
     # part 1
     print(max(elves))
-    
+
     # part 2
     elves.sort()
     print(sum(elves[-3:]))
