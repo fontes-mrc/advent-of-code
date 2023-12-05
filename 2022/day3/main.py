@@ -10,7 +10,7 @@ def get_input() -> list[str]:
     return [r.replace("\n", "") for r in rows]
 
 
-# avoid the use of set.intersection
+# avoid the use of set.intersection for pure practice
 def get_intersection(
     left: list[str],
     right: list[str],
@@ -24,11 +24,11 @@ def get_intersection(
     return inter
 
 
-def calculate_part_1(inputs: list[str]) -> int:
+def calculate_part_1(input_: list[str]) -> int:
     score = 0
-    for input in inputs:
-        left = list(input[: int(len(input) / 2)])
-        right = list(input[int(len(input) / 2) :])
+    for row in input_:
+        left = list(row[: int(len(row) / 2)])
+        right = list(row[int(len(row) / 2) :])
 
         inter = get_intersection(left, right)
         score += l.index(inter[0])
@@ -36,12 +36,12 @@ def calculate_part_1(inputs: list[str]) -> int:
     return score
 
 
-def calculate_part_2(inputs: list[str]) -> int:
+def calculate_part_2(input_: list[str]) -> int:
     score = 0
-    for i in range(0, len(inputs), 3):
-        row1 = inputs[i]
-        row2 = inputs[i + 1]
-        row3 = inputs[i + 2]
+    for i in range(0, len(input_), 3):
+        row1 = input_[i]
+        row2 = input_[i + 1]
+        row3 = input_[i + 2]
 
         combo1 = get_intersection(list(row1), list(row2))
         inter = get_intersection(combo1, list(row3))
@@ -51,9 +51,9 @@ def calculate_part_2(inputs: list[str]) -> int:
 
 
 def main():
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":

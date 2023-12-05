@@ -8,12 +8,12 @@ def get_input() -> list:
 
 
 def main() -> None:
-    inputs: list[str] = get_input()
+    input_: list[str] = get_input()
     elves = []
     elf = 0
 
-    for input in inputs:
-        number = input.replace("\n", "")
+    for row in input_:
+        number = row.replace("\n", "")
         if number != "":
             elf += int(number)
         else:

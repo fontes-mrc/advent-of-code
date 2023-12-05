@@ -29,15 +29,15 @@ def parse_order(order: str) -> tuple[int, int, int]:
     return qtd, from_, to_
 
 
-def calculate_part_1(inputs: list[str]) -> str:
+def calculate_part_1(input_: list[str]) -> str:
     stacks_diagram = []
-    while len(inputs[0]) != 0:
-        stacks_diagram.append(inputs.pop(0))
-    inputs.pop(0)
+    while len(input_[0]) != 0:
+        stacks_diagram.append(input_.pop(0))
+    input_.pop(0)
 
     stacks = parse_stacks(stacks_diagram[:-1])
-    for input in inputs:
-        qtd, from_, to_ = parse_order(input)
+    for row in input_:
+        qtd, from_, to_ = parse_order(row)
 
         while qtd > 0:
             stacks[to_].append(stacks[from_].pop())
@@ -46,15 +46,15 @@ def calculate_part_1(inputs: list[str]) -> str:
     return "".join([s[-1] for s in stacks.values()])
 
 
-def calculate_part_2(inputs: list[str]) -> str:
+def calculate_part_2(input_: list[str]) -> str:
     stacks_diagram = []
-    while len(inputs[0]) != 0:
-        stacks_diagram.append(inputs.pop(0))
-    inputs.pop(0)
+    while len(input_[0]) != 0:
+        stacks_diagram.append(input_.pop(0))
+    input_.pop(0)
 
     stacks = parse_stacks(stacks_diagram[:-1])
-    for input in inputs:
-        qtd, from_, to_ = parse_order(input)
+    for row in input_:
+        qtd, from_, to_ = parse_order(row)
 
         stacks[to_].extend(stacks[from_][-qtd:])
         del stacks[from_][-qtd:]
@@ -63,9 +63,9 @@ def calculate_part_2(inputs: list[str]) -> str:
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs.copy()))
-    print(calculate_part_2(inputs.copy()))
+    input_ = get_input()
+    print(calculate_part_1(input_.copy()))
+    print(calculate_part_2(input_.copy()))
 
 
 if __name__ == "__main__":

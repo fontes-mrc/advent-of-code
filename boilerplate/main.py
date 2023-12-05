@@ -8,24 +8,24 @@ def get_input() -> list[str]:
     return [r.replace("\n", "") for r in rows]
 
 
-def calculate_part_1(inputs: list[str]) -> int:
+def calculate_part_1(input_: list[str]) -> int:
     score = 0
-    for input in inputs:
+    for row in input_:
         ...
     return score
 
 
-def calculate_part_2(inputs: list[str]) -> int:
+def calculate_part_2(input_: list[str]) -> int:
     score = 0
-    for input in inputs:
+    for row in input_:
         ...
     return score
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":

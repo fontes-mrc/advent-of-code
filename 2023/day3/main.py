@@ -31,7 +31,7 @@ def get_ranges(
 
 
 def is_part_number(
-    matrix: list[str], rows: list[int], cols: list[int], symbols: list[str]
+    matrix: list[str], rows: list[int], cols: list[int], symbols: list[str],
 ) -> bool:
     for r in rows:
         for c in cols:
@@ -73,25 +73,25 @@ def get_gear_ratios(
     return new_values
 
 
-def calculate_part_1(inputs: list[str]) -> int:
+def calculate_part_1(input_: list[str]) -> int:
     part_numbers: list[int] = []
     symbols = list(string.punctuation)
     symbols.remove(".")
 
-    for i in range(len(inputs)):
+    for i in range(len(input_)):
         digits, cols = "", []
 
-        for j in range(len(inputs[i])):
-            char_at: str = inputs[i][j]
+        for j in range(len(input_[i])):
+            char_at: str = input_[i][j]
 
             if char_at.isdigit():
                 digits += char_at
                 cols.append(j)
 
-            if j == (len(inputs[i]) - 1) or not char_at.isdigit():
+            if j == (len(input_[i]) - 1) or not char_at.isdigit():
                 if len(digits) > 0:
-                    rows, cols = get_ranges(inputs, i, cols)
-                    if is_part_number(inputs, rows, cols, symbols):
+                    rows, cols = get_ranges(input_, i, cols)
+                    if is_part_number(input_, rows, cols, symbols):
                         part_numbers.append(int(digits))
                     digits, cols = "", []
 
@@ -99,26 +99,26 @@ def calculate_part_1(inputs: list[str]) -> int:
     return score
 
 
-def calculate_part_2(inputs: list[str]) -> int:
+def calculate_part_2(input_: list[str]) -> int:
     gears: dict[int, dict[int, list[int]]] = {}
     symbols = list(string.punctuation)
     symbols.remove(".")
 
-    for i in range(len(inputs)):
+    for i in range(len(input_)):
         digits, cols = "", []
 
-        for j in range(len(inputs[i])):
-            char_at: str = inputs[i][j]
+        for j in range(len(input_[i])):
+            char_at: str = input_[i][j]
 
             if char_at.isdigit():
                 digits += char_at
                 cols.append(j)
 
-            if j == (len(inputs[i]) - 1) or not char_at.isdigit():
+            if j == (len(input_[i]) - 1) or not char_at.isdigit():
                 if len(digits) > 0:
-                    rows, cols = get_ranges(inputs, i, cols)
-                    if is_part_number(inputs, rows, cols, symbols):
-                        update_gears(gears, inputs, rows, cols, int(digits))
+                    rows, cols = get_ranges(input_, i, cols)
+                    if is_part_number(input_, rows, cols, symbols):
+                        update_gears(gears, input_, rows, cols, int(digits))
                     digits, cols = "", []
 
     gear_ratios = get_gear_ratios(gears)
@@ -127,9 +127,9 @@ def calculate_part_2(inputs: list[str]) -> int:
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":

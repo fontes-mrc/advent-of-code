@@ -8,11 +8,11 @@ def get_input() -> list[str]:
     return [r.replace("\n", "") for r in rows]
 
 
-def calculate_part_1(inputs: list[str]) -> int:
+def calculate_part_1(input_: list[str]) -> int:
     score = 0
-    for input in inputs:
-        l = [int(i) for i in input.split(",")[0].split("-")]
-        r = [int(i) for i in input.split(",")[1].split("-")]
+    for row in input_:
+        l = [int(i) for i in row.split(",")[0].split("-")]
+        r = [int(i) for i in row.split(",")[1].split("-")]
 
         if l[0] == r[0]:
             score += 1
@@ -27,11 +27,11 @@ def calculate_part_1(inputs: list[str]) -> int:
     return score
 
 
-def calculate_part_2(inputs: list[str]) -> int:
+def calculate_part_2(input_: list[str]) -> int:
     score = 0
-    for input in inputs:
-        l = [int(i) for i in input.split(",")[0].split("-")]
-        r = [int(i) for i in input.split(",")[1].split("-")]
+    for row in input_:
+        l = [int(i) for i in row.split(",")[0].split("-")]
+        r = [int(i) for i in row.split(",")[1].split("-")]
 
         if l[0] == r[0] or l[1] == r[1]:
             score += 1
@@ -47,9 +47,9 @@ def calculate_part_2(inputs: list[str]) -> int:
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ def split_game(game: str) -> tuple[int, list[list[str]]]:
     return game_id, sets
 
 
-def calculate_part_1(inputs: str) -> int:
+def calculate_part_1(input_: str) -> int:
     n = 0
     max_ = {
         "red": 12,
@@ -23,8 +23,8 @@ def calculate_part_1(inputs: str) -> int:
         "blue": 14,
     }
 
-    for input in inputs:
-        game_id, sets = split_game(input)
+    for row in input_:
+        game_id, sets = split_game(row)
         valid_game = True
 
         for set in sets:
@@ -40,12 +40,12 @@ def calculate_part_1(inputs: str) -> int:
     return n
 
 
-def calculate_part_2(inputs: str) -> int:
+def calculate_part_2(input_: str) -> int:
     n = 0
 
-    for input in inputs:
+    for row in input_:
         max_ = {}
-        _, sets = split_game(input)
+        _, sets = split_game(row)
 
         for set in sets:
             qtd = int(set[0])
@@ -59,9 +59,9 @@ def calculate_part_2(inputs: str) -> int:
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":

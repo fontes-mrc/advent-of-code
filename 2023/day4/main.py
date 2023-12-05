@@ -14,12 +14,12 @@ def trim(s: str) -> str:
     return s.strip()
 
 
-def calculate_part_1(inputs: list[str]) -> int:
+def calculate_part_1(input_: list[str]) -> int:
     card_scores = {}
-    for input in inputs:
+    for row in input_:
         score = 0
-        card_id = int(trim(input.split(":")[0]).split(" ")[1])
-        numbers = [trim(i).split(" ") for i in input.split(":")[1].strip().split("|")]
+        card_id = int(trim(row.split(":")[0]).split(" ")[1])
+        numbers = [trim(i).split(" ") for i in row.split(":")[1].strip().split("|")]
         winners = [int(n) for n in numbers[0]]
         mine = [int(n) for n in numbers[1]]
 
@@ -36,7 +36,7 @@ def calculate_part_1(inputs: list[str]) -> int:
     return score
 
 
-def calculate_part_2(inputs: list[str]) -> int:
+def calculate_part_2(input_: list[str]) -> int:
     score = 0
 
     def process_item(inputs: list[str], i: int) -> int:
@@ -59,16 +59,16 @@ def calculate_part_2(inputs: list[str]) -> int:
 
         return count
 
-    for i in range(len(inputs)):
-        score += process_item(inputs, i)
+    for i in range(len(input_)):
+        score += process_item(input_, i)
 
     return score
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":

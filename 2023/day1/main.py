@@ -7,7 +7,7 @@ def get_input() -> list:
         return f.readlines()
 
 
-def replace_numbers(input: str) -> str:
+def replace_numbers(input_: str) -> str:
     numbers = [
         "zero",
         "one",
@@ -23,32 +23,32 @@ def replace_numbers(input: str) -> str:
 
     replaces = {}
     for i in range(len(numbers)):
-        lidx = input.find(numbers[i])
-        ridx = input.rfind(numbers[i])
+        lidx = input_.find(numbers[i])
+        ridx = input_.rfind(numbers[i])
 
         if lidx != -1:
             replaces[i] = (lidx, ridx)
 
     for number, indexes in replaces.items():
         lidx, ridx = indexes
-        input = input[:lidx] + str(number) + input[lidx + 1 :]
-        input = input[:ridx] + str(number) + input[ridx + 1 :]
+        input_ = input_[:lidx] + str(number) + input_[lidx + 1 :]
+        input_ = input_[:ridx] + str(number) + input_[ridx + 1 :]
 
-    return input
+    return input_
 
 
 def main() -> None:
-    inputs = get_input()
+    input_ = get_input()
     n = 0
 
-    for input in inputs:
-        input = replace_numbers(input)
+    for row in input_:
+        row = replace_numbers(row)
         left_ok = False
         right_ok = False
 
-        for i in range(len(input)):
-            left = input[i]
-            right = input[-(i + 1)]
+        for i in range(len(row)):
+            left = row[i]
+            right = row[-(i + 1)]
 
             if left.isdigit() and not left_ok:
                 n += int(left) * 10

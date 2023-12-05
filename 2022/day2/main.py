@@ -8,7 +8,7 @@ def get_input() -> list[str]:
     return [r.replace("\n", "") for r in rows]
 
 
-def calculate_part_1(inputs: list[str]) -> int:
+def calculate_part_1(input_: list[str]) -> int:
     score = 0
 
     remap = {
@@ -44,9 +44,9 @@ def calculate_part_1(inputs: list[str]) -> int:
         },
     }
 
-    for input in inputs:
-        op = remap[input.split(" ")[0]]
-        me = remap[input.split(" ")[1]]
+    for row in input_:
+        op = remap[row.split(" ")[0]]
+        me = remap[row.split(" ")[1]]
 
         score += matchup[op][me]
         score += elem[me]
@@ -54,7 +54,7 @@ def calculate_part_1(inputs: list[str]) -> int:
     return score
 
 
-def calculate_part_2(inputs: list[str]) -> int:
+def calculate_part_2(input_: list[str]) -> int:
     score = 0
 
     remap = {
@@ -96,9 +96,9 @@ def calculate_part_2(inputs: list[str]) -> int:
         },
     }
 
-    for input in inputs:
-        op = remap[input.split(" ")[0]]
-        decision = remap[input.split(" ")[1]]
+    for row in input_:
+        op = remap[row.split(" ")[0]]
+        decision = remap[row.split(" ")[1]]
         me = matchup[op][decision]
 
         score += decisions[decision]
@@ -108,9 +108,9 @@ def calculate_part_2(inputs: list[str]) -> int:
 
 
 def main() -> None:
-    inputs = get_input()
-    print(calculate_part_1(inputs))
-    print(calculate_part_2(inputs))
+    input_ = get_input()
+    print(calculate_part_1(input_))
+    print(calculate_part_2(input_))
 
 
 if __name__ == "__main__":
