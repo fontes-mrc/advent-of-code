@@ -31,7 +31,10 @@ def get_ranges(
 
 
 def is_part_number(
-    matrix: list[str], rows: list[int], cols: list[int], symbols: list[str],
+    matrix: list[str],
+    rows: list[int],
+    cols: list[int],
+    symbols: list[str],
 ) -> bool:
     for r in rows:
         for c in cols:
