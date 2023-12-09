@@ -1,67 +1,124 @@
+"""
+================================================================================
+Advent of Code 2023
+
+--- Day 1: Trebuchet?! ---
+Something is wrong with global snow production, and you've been selected to take
+a look. The Elves have even given you a map; on it, they've used stars to mark
+the top fifty locations that are likely to be having problems.
+
+You've been doing this long enough to know that to restore snow operations, you 
+need to check all fifty stars by December 25th.
+
+Collect stars by solving puzzles. Two puzzles will be made available on each day 
+in the Advent calendar; the second puzzle is unlocked when you complete the 
+first. Each puzzle grants one star. Good luck!
+
+You try to ask why they can't just use a weather machine ("not powerful enough")
+and where they're even sending you ("the sky") and why your map looks mostly
+blank ("you sure ask a lot of questions") and hang on did you just say the sky 
+("of course, where do you think snow comes from") when you realize that the Elves
+are already loading you into a trebuchet ("please hold still, we need to 
+strap you in").
+
+As they're making the final adjustments, they discover that their calibration
+document (your puzzle input) has been amended by a very young Elf who was
+apparently just excited to show off her art skills. Consequently, the Elves are
+having trouble reading the values on the document.
+
+The newly-improved calibration document consists of lines of text; each line
+originally contained a specific calibration value that the Elves now need to
+recover. On each line, the calibration value can be found by combining the first
+digit and the last digit (in that order) to form a single two-digit number.
+
+For example:
+
+1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet
+In this example, the calibration values of these four lines are 12, 38, 15, and
+77. Adding these together produces 142.
+
+Consider your entire calibration document. What is the sum of all of the
+calibration values?
+
+Your puzzle answer was 54081.
+
+--- Part Two ---
+Your calculation isn't quite right. It looks like some of the digits are
+actually spelled out with letters: one, two, three, four, five, six, seven,
+eight, and nine also count as valid "digits".
+
+Equipped with this new information, you now need to find the real first and
+last digit on each line. For example:
+
+two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen
+In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76.
+Adding these together produces 281.
+
+What is the sum of all of the calibration values?
+
+Your puzzle answer was 54649.
+================================================================================
+"""
+
 import pathlib
+import re
 
 
-def get_input() -> list:
+def get_input() -> list[str]:
     dir_ = pathlib.Path(__file__).parent.absolute()
     with open(dir_ / "input.txt") as f:
-        return f.readlines()
+        rows = f.readlines()
+    return [r.replace("\n", "") for r in rows]
 
 
-def replace_numbers(input_: str) -> str:
-    numbers = [
-        "zero",
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight",
-        "nine",
-    ]
+def part1(input_: list[str]) -> int:
+    return sum(
+        [
+            10 * int(next(filter(str.isdigit, row)))
+            + int(next(filter(str.isdigit, row[::-1])))
+            for row in input_
+        ]
+    )
 
-    replaces = {}
-    for i in range(len(numbers)):
-        lidx = input_.find(numbers[i])
-        ridx = input_.rfind(numbers[i])
 
-        if lidx != -1:
-            replaces[i] = (lidx, ridx)
+def part2(input_: list[str]) -> int:
+    pattern = r"(?=(\d|one|two|three|four|five|six|seven|eight|nine))"
+    remap = {
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+    }
+    score = 0
 
-    for number, indexes in replaces.items():
-        lidx, ridx = indexes
-        input_ = input_[:lidx] + str(number) + input_[lidx + 1 :]
-        input_ = input_[:ridx] + str(number) + input_[ridx + 1 :]
+    for row in input_:
+        matches = re.findall(pattern, row)
 
-    return input_
+        if len(matches) > 0:
+            score += int(remap.get(matches[0], matches[0])) * 10
+            score += int(remap.get(matches[-1], matches[-1]))
+
+    return score
 
 
 def main() -> None:
     input_ = get_input()
-    n = 0
-
-    for row in input_:
-        row = replace_numbers(row)
-        left_ok = False
-        right_ok = False
-
-        for i in range(len(row)):
-            left = row[i]
-            right = row[-(i + 1)]
-
-            if left.isdigit() and not left_ok:
-                n += int(left) * 10
-                left_ok = True
-
-            if right.isdigit() and not right_ok:
-                n += int(right)
-                right_ok = True
-
-            if left_ok and right_ok:
-                break
-
-    print(n)
+    print(part1(input_))
+    print(part2(input_))
 
 
 if __name__ == "__main__":

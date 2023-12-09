@@ -4,7 +4,7 @@ In this repository, you'll find my responses to the challenges proposed in Adven
 
 The answers are categorized into three levels of resolution:
  - The initial solution that comes to mind, without much concern for performance or readability, written in Python.
- - An optimized solution aimed at reducing execution time, also written in Python.
+ - An optimized solution aimed at reducing execution time or code readability, also written in Python.
  - A solution in another language with which I'm less familiar (C++), based on the optimized Python solution.
 
 ## Progress
@@ -13,7 +13,7 @@ The answers are categorized into three levels of resolution:
 
 | Day | Python | Python Opt | C++ |
 |-----|--------|------------|-----|
-| 1   |   x    |            |     |
+| 1   |   x    |     x      |     |
 | 2   |   x    |            |     |
 | 3   |   x    |            |     |
 | 4   |   x    |            |     |
