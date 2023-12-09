@@ -1,3 +1,10 @@
+"""
+================================================================================
+Advent of Code 20xx
+...
+================================================================================
+"""
+
 import pathlib
 
 
@@ -8,14 +15,14 @@ def get_input() -> list[str]:
     return [r.replace("\n", "") for r in rows]
 
 
-def calculate_part_1(input_: list[str]) -> int:
+def part1(input_: list[str]) -> int:
     score = 0
     for row in input_:
         ...
     return score
 
 
-def calculate_part_2(input_: list[str]) -> int:
+def part2(input_: list[str]) -> int:
     score = 0
     for row in input_:
         ...
@@ -24,8 +31,8 @@ def calculate_part_2(input_: list[str]) -> int:
 
 def main() -> None:
     input_ = get_input()
-    print(calculate_part_1(input_))
-    print(calculate_part_2(input_))
+    print(part1(input_))
+    print(part2(input_))
 
 
 if __name__ == "__main__":
