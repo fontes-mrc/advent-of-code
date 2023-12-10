@@ -14,7 +14,7 @@ The answers are categorized into three levels of resolution:
 | Day | Python | Python Opt | C++ |
 |-----|--------|------------|-----|
 | 1   |   x    |     x      |     |
-| 2   |   x    |            |     |
+| 2   |   x    |     x      |     |
 | 3   |   x    |            |     |
 | 4   |   x    |            |     |
 | 5   |   x    |            |     |
