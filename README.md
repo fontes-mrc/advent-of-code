@@ -22,7 +22,7 @@ The answers are categorized into three levels of resolution:
 | 7   |   x    |            |     |
 | 8   |   x    |            |     |
 | 9   |   x    |            |     |
-| 10  |        |            |     |
+| 10  |   x    |            |     |
 | 11  |        |            |     |
 | 12  |        |            |     |
 | 13  |        |            |     |
