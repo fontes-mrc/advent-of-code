@@ -28,12 +28,12 @@ $ python3 aoc.py perftest -y 2023 -l python
 
 | Day                                    | Part 1 | Part 2 |  Best Time | Time Comp. | Space Comp. |
 |----------------------------------------|--------|--------|------------|------------|-------------|
-| Day 1: Trebuchet?!                     |   ✓    |   ✓    | 0.019110 s | O(nm)      | O(n)        |
-| Day 2: Cube Conundrum                  |   ✓    |   ✓    | 0.018096 s | O(nmk)     | O(1)        |
-| Day 3: Gear Ratios                     |   ✓    |   ✓    | 0.019266 s | O(nmk)     | O(nm)       |
-| Day 4: Scratchcards                    |   ✓    |   ✓    | 0.018874 s | O(nm)      | O(n)        |
-| Day 5: If You Give A Seed A Fertilizer |   ✓    |   ✓    | 0.035930 s | O(nm)      | O(n)        |
-| Day 6: Wait For It                     |   ✓    |   ✓    | 0.018029 s | O(1)       | O(1)        |
+| Day 1: Trebuchet?!                     |   ✓    |   ✓    | 0.021548 s | O(nm)      | O(n)        |
+| Day 2: Cube Conundrum                  |   ✓    |   ✓    | 0.018772 s | O(nmk)     | O(1)        |
+| Day 3: Gear Ratios                     |   ✓    |   ✓    | 0.022257 s | O(nmk)     | O(nm)       |
+| Day 4: Scratchcards                    |   ✓    |   ✓    | 0.022378 s | O(nm)      | O(n)        |
+| Day 5: If You Give A Seed A Fertilizer |   ✓    |   ✓    | 0.037088 s | O(nm)      | O(n)        |
+| Day 6: Wait For It                     |   ✓    |   ✓    | 0.016729 s | O(1)       | O(1)        |
 | Day 7                                  |        |        |            |            |             |
 | Day 8                                  |        |        |            |            |             |
 | Day 9                                  |        |        |            |            |             |
