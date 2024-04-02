@@ -26,30 +26,30 @@ $ python3 aoc.py perftest -y 2023 -l python
 
 ### Python
 
-| Day                                    | Part 1 | Part 2 |  Best Time | Time Comp. | Space Comp. |
-|----------------------------------------|--------|--------|------------|------------|-------------|
-| Day 1: Trebuchet?!                     |   ✓    |   ✓    | 0.018646 s | O(nm)      | O(n)        |
-| Day 2: Cube Conundrum                  |   ✓    |   ✓    | 0.017580 s | O(nmk)     | O(1)        |
-| Day 3: Gear Ratios                     |   ✓    |   ✓    | 0.021548 s | O(nmk)     | O(nm)       |
-| Day 4: Scratchcards                    |   ✓    |   ✓    | 0.019948 s | O(nm)      | O(n)        |
-| Day 5: If You Give A Seed A Fertilizer |   ✓    |   ✓    | 0.031844 s | O(nm)      | O(n)        |
-| Day 6: Wait For It                     |   ✓    |   ✓    | 0.017258 s | O(1)       | O(1)        |
-| Day 7: Camel Cards                     |   ✓    |   ✓    | 0.022017 s | O(n log n) | O(n)        |
-| Day 8                                  |        |        |            |            |             |
-| Day 9                                  |        |        |            |            |             |
-| Day 10                                 |        |        |            |            |             |
-| Day 11                                 |        |        |            |            |             |
-| Day 12                                 |        |        |            |            |             |
-| Day 13                                 |        |        |            |            |             |
-| Day 14                                 |        |        |            |            |             |
-| Day 15                                 |        |        |            |            |             |
-| Day 16                                 |        |        |            |            |             |
-| Day 17                                 |        |        |            |            |             |
-| Day 18                                 |        |        |            |            |             |
-| Day 19                                 |        |        |            |            |             |
-| Day 20                                 |        |        |            |            |             |
-| Day 21                                 |        |        |            |            |             |
-| Day 22                                 |        |        |            |            |             |
-| Day 23                                 |        |        |            |            |             |
-| Day 24                                 |        |        |            |            |             |
-| Day 25                                 |        |        |            |            |             |
+| Day                                    | Part 1 | Part 2 |  Best Time | Time Comp. | Space Comp.   |
+|----------------------------------------|--------|--------|------------|------------|---------------|
+| Day 1: Trebuchet?!                     |   ✓    |   ✓    | 0.018646 s | O(nm)      | O(n)          |
+| Day 2: Cube Conundrum                  |   ✓    |   ✓    | 0.017580 s | O(nmk)     | O(1)          |
+| Day 3: Gear Ratios                     |   ✓    |   ✓    | 0.021548 s | O(nmk)     | O(nm)         |
+| Day 4: Scratchcards                    |   ✓    |   ✓    | 0.019948 s | O(nm)      | O(n)          |
+| Day 5: If You Give A Seed A Fertilizer |   ✓    |   ✓    | 0.031844 s | O(nm)      | O(n)          |
+| Day 6: Wait For It                     |   ✓    |   ✓    | 0.017258 s | O(1)       | O(1)          |
+| Day 7: Camel Cards                     |   ✓    |   ✓    | 0.022017 s | O(n log n) | O(n)          |
+| Day 8: Haunted Wasteland               |   ✓    |   ✓    | 0.040780 s | O(nk)      | O(nm + n + k) |
+| Day 9                                  |        |        |            |            |               |
+| Day 10                                 |        |        |            |            |               |
+| Day 11                                 |        |        |            |            |               |
+| Day 12                                 |        |        |            |            |               |
+| Day 13                                 |        |        |            |            |               |
+| Day 14                                 |        |        |            |            |               |
+| Day 15                                 |        |        |            |            |               |
+| Day 16                                 |        |        |            |            |               |
+| Day 17                                 |        |        |            |            |               |
+| Day 18                                 |        |        |            |            |               |
+| Day 19                                 |        |        |            |            |               |
+| Day 20                                 |        |        |            |            |               |
+| Day 21                                 |        |        |            |            |               |
+| Day 22                                 |        |        |            |            |               |
+| Day 23                                 |        |        |            |            |               |
+| Day 24                                 |        |        |            |            |               |
+| Day 25                                 |        |        |            |            |               |
