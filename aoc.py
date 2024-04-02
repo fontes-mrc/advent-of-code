@@ -25,6 +25,7 @@ RichHelpFormatter.styles["argparse.metavar"] = "gray50 italic"
 class Language(StrEnum):
     PYTHON = "python"
 
+
 TIME_COLORS = {
     0.02: "cyan",
     0.2: "green",
