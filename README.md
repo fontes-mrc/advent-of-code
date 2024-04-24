@@ -36,7 +36,7 @@ $ python3 aoc.py perftest -y 2023 -l python
 | Day 6: Wait For It                     |   ✓    |   ✓    | 0.017258 s | O(1)       | O(1)          |
 | Day 7: Camel Cards                     |   ✓    |   ✓    | 0.022017 s | O(n log n) | O(n)          |
 | Day 8: Haunted Wasteland               |   ✓    |   ✓    | 0.040780 s | O(nk)      | O(nm + n + k) |
-| Day 9                                  |        |        |            |            |               |
+| Day 9: Mirage Maintenance              |   ✓    |   ✓    | 0.018498 s | O(nm)      | O(n)          |
 | Day 10                                 |        |        |            |            |               |
 | Day 11                                 |        |        |            |            |               |
 | Day 12                                 |        |        |            |            |               |

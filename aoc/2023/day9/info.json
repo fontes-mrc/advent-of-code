@@ -12,7 +12,7 @@
                 "part2": "971"
             },
             "complexity": {
-                "time": "O(n*m)",
+                "time": "O(nm)",
                 "space": "O(n)"
             },
             "times": [
