@@ -1,17 +1,17 @@
+import json
 from argparse import ArgumentParser
 from dataclasses import dataclass, field
-from pathlib import Path
-from rich.console import Console
-from rich.markdown import Markdown
-from rich.syntax import Syntax
-from rich.padding import Padding
-from rich.table import Table, box
-from rich_argparse import RichHelpFormatter
 from enum import StrEnum
-import json
+from pathlib import Path
 from subprocess import run
 from timeit import timeit
 
+from rich.console import Console
+from rich.markdown import Markdown
+from rich.padding import Padding
+from rich.syntax import Syntax
+from rich.table import Table, box
+from rich_argparse import RichHelpFormatter
 
 ROOT = Path(__file__).parent / "aoc"
 CONSOLE = Console()
@@ -63,6 +63,7 @@ class Day:
     expected1: str = field(init=False)
     expected2: str = field(init=False)
     solutions: dict[str, Solution] = field(init=False, default_factory=dict)
+    _input_path: Path = field(init=False)
 
     def __post_init__(self) -> None:
         self.refresh()
@@ -70,6 +71,7 @@ class Day:
     def refresh(self) -> None:
         info = json.loads((self.path / "info.json").read_text())
         description = (self.path / "description.md").read_text()
+        _input_path = self.path / "input.txt"
         title = info["title"]
         expected1 = info["expected"]["part1"]
         expected2 = info["expected"]["part2"]
@@ -111,6 +113,7 @@ class Day:
         self.expected1 = expected1
         self.expected2 = expected2
         self.solutions = solutions
+        self._input_path = _input_path
 
 
 @dataclass
@@ -195,16 +198,12 @@ class AoE:
                         (
                             success
                             if solution.result1 == day_props.expected1
-                            else fail
-                            if solution.result1
-                            else ""
+                            else fail if solution.result1 else ""
                         ),
                         (
                             success
                             if solution.result2 == day_props.expected2
-                            else fail
-                            if solution.result2
-                            else ""
+                            else fail if solution.result2 else ""
                         ),
                         solution.best_time_label,
                         solution.time_complexity,
@@ -221,7 +220,8 @@ class AoE:
             day_props = self.years[year].days.get(day)
             if day_props:
                 solution = day_props.solutions.get(lang)
-                if solution:
+                input_exists = day_props._input_path.exists()
+                if solution and input_exists:
                     result1: str | None = None
                     result2: str | None = None
                     times = []
@@ -264,7 +264,7 @@ class AoE:
                         json.dumps(info, indent=4)
                     )
 
-                day_props.refresh()
+                    day_props.refresh()
 
 
 def main():
