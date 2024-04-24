@@ -1,6 +1,5 @@
-from pathlib import Path
 import re
-
+from pathlib import Path
 
 input_path = Path(__file__).parent.parent.parent / "input.txt"
 input_ = input_path.read_text()
