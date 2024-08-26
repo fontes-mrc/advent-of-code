@@ -1,0 +1,15 @@
+{
+    "day": 3,
+    "year": 2023,
+    "title": "Gear Ratios",
+    "part1": {
+        "expected": 531932,
+        "result": 531932,
+        "elapsed": 2.7159
+    },
+    "part2": {
+        "expected": 73646890,
+        "result": 73646890,
+        "elapsed": 2.2256
+    }
+}

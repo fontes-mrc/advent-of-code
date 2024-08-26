@@ -1,0 +1,15 @@
+{
+    "day": 4,
+    "year": 2023,
+    "title": "Scratchcards",
+    "part1": {
+        "expected": 23441,
+        "result": 23441,
+        "elapsed": 1.7786
+    },
+    "part2": {
+        "expected": 5923918,
+        "result": 5923918,
+        "elapsed": 1.8063
+    }
+}

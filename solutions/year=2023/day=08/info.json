@@ -1,0 +1,15 @@
+{
+    "day": 8,
+    "year": 2023,
+    "title": "Haunted Wasteland",
+    "part1": {
+        "expected": 13207,
+        "result": 13207,
+        "elapsed": 1.9438
+    },
+    "part2": {
+        "expected": 12324145107121,
+        "result": 12324145107121,
+        "elapsed": 21.0532
+    }
+}

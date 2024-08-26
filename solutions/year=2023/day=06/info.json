@@ -1,0 +1,15 @@
+{
+    "day": 6,
+    "year": 2023,
+    "title": "Wait For It",
+    "part1": {
+        "expected": 220320,
+        "result": 220320,
+        "elapsed": 0.0057
+    },
+    "part2": {
+        "expected": 34454850,
+        "result": 34454850,
+        "elapsed": 0.0017
+    }
+}

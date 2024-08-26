@@ -1,0 +1,15 @@
+{
+    "day": 11,
+    "year": 2023,
+    "title": "Cosmic Expansion",
+    "part1": {
+        "expected": 9509330,
+        "result": 9509330,
+        "elapsed": 10.035
+    },
+    "part2": {
+        "expected": 635832237682,
+        "result": 635832237682,
+        "elapsed": 14.1456
+    }
+}

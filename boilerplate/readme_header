@@ -1,0 +1,18 @@
+# Advent of Code
+
+In this repository, you'll find my responses to the challenges proposed in Advent of Code. The main goal is to practice problem-solving skills and share the results with the community, so others can benefit from some of my ideas.
+
+## CLI Tool
+
+I've created a CLI tool to help me manage the project. It's a simple Python script that allows me to run the tests and get the status of each day.
+
+```bash
+$ python3 aoc.py --help
+```
+
+### Get unfo from specific day
+
+```bash
+$ docker run --rm -it -v $(pwd):/app -w /app --cpus 1 --memory 128m python:3.12 bash
+$ python3 aoc.py info -y 2023 -d 1
+```

@@ -1,347 +1,229 @@
 import json
 from argparse import ArgumentParser
-from dataclasses import dataclass, field
-from enum import StrEnum
 from pathlib import Path
 from subprocess import run
-from timeit import timeit
 
-from rich.console import Console
-from rich.markdown import Markdown
-from rich.padding import Padding
-from rich.syntax import Syntax
-from rich.table import Table, box
-from rich_argparse import RichHelpFormatter
+from common.eval import Response
+from common.info import DayInfo, DayPartInfo
+from common.vars import FOLDER_ID_STR
 
-ROOT = Path(__file__).parent / "aoc"
-CONSOLE = Console()
-MAX_DAYS = 25
-
-RichHelpFormatter.styles["argparse.args"] = "green"
-RichHelpFormatter.styles["argparse.groups"] = "magenta"
-RichHelpFormatter.styles["argparse.metavar"] = "gray50 italic"
+ROOT = Path(__file__).parent
+SOLUTIONS = ROOT / "solutions"
+BOILERPLATE = (ROOT / "boilerplate" / "solution.py").read_text()
 
 
-class Language(StrEnum):
-    PYTHON = "python"
-
-
-TIME_COLORS = {
-    0.02: "cyan",
-    0.2: "green",
-    0.4: "yellow",
-    0.8: "orange",
-    1.6: "red",
-}
-
-EXTENSION = {
-    Language.PYTHON: "py",
-}
-
-EXECUTABLE = {
-    Language.PYTHON: "python",
-}
-
-
-@dataclass
-class Solution:
-    code1: Path
-    code2: Path
-    result1: str | None
-    result2: str | None
-    time_complexity: str
-    space_complexity: str
-    best_time: float
-    best_time_label: str
-
-
-@dataclass
-class Day:
-    path: Path
-    title: str = field(init=False)
-    description: str = field(init=False)
-    expected1: str = field(init=False)
-    expected2: str = field(init=False)
-    solutions: dict[str, Solution] = field(init=False, default_factory=dict)
-    _input_path: Path = field(init=False)
-
-    def __post_init__(self) -> None:
-        self.refresh()
-
-    def refresh(self) -> None:
-        info = json.loads((self.path / "info.json").read_text())
-        description = (self.path / "description.md").read_text()
-        _input_path = self.path / "input.txt"
-        title = info["title"]
-        expected1 = info["expected"]["part1"]
-        expected2 = info["expected"]["part2"]
-
-        description = description.replace("$(part1)", expected1)
-        description = description.replace("$(part2)", expected2)
-
-        solutions: dict[str, Solution] = {}
-
-        for sol in info.get("solutions", []):
-            lang = Language(sol["lang"])
-            code1 = self.path / "solution" / lang.value / f"part1.{EXTENSION[lang]}"
-            code2 = self.path / "solution" / lang.value / f"part2.{EXTENSION[lang]}"
-            result1 = sol.get("results", {}).get("part1")
-            result2 = sol.get("results", {}).get("part2")
-            complexities = sol.get("complexity", {})
-            time_complexity = complexities.get("time", "unknown")
-            space_complexity = complexities.get("space", "unknown")
-            best_time = min([float(t) for t in sol["times"]] or [0])
-            best_time_label = ""
-            for t, color in TIME_COLORS.items():
-                if best_time <= t:
-                    best_time_label = f"[{color}]{best_time:.6f} s[/{color}]"
-                    break
-
-            solutions[lang] = Solution(
-                code1=code1,
-                code2=code2,
-                result1=result1,
-                result2=result2,
-                time_complexity=time_complexity,
-                space_complexity=space_complexity,
-                best_time=best_time,
-                best_time_label=best_time_label,
-            )
-
-        self.title = title
-        self.description = description
-        self.expected1 = expected1
-        self.expected2 = expected2
-        self.solutions = solutions
-        self._input_path = _input_path
-
-
-@dataclass
-class Year:
-    days: dict[int, Day]
-
-
-class AoE:
-    def __init__(self) -> None:
-        self.years = self._parse_years()
-
-    @staticmethod
-    def _parse_years() -> dict[int, Year]:
-        years = {}
-        for year in ROOT.iterdir():
-            if year.is_dir():
-                days = {}
-                for day in year.iterdir():
-                    if day.is_dir():
-                        days[int(day.name[3:])] = Day(day)
-                years[int(year.name)] = Year(days)
-        return years
-
-    def print_solution(self, year: int, day: int, lang: Language) -> None:
-        day_props: Day = self.years[year].days[day]
-        solution = day_props.solutions[lang]
-
-        CONSOLE.print(f"[green bold]Advent of Code {year} - Day {day}[/green bold]")
-        CONSOLE.print(f"[green]Description[/green]:")
-        CONSOLE.print(
-            Padding(
-                Markdown(day_props.description),
-                (1, 4),
-            )
+def setup(year: int, day: int) -> None:
+    folder = SOLUTIONS / FOLDER_ID_STR.format(year=year, day=day)
+    folder.mkdir(parents=True, exist_ok=True)
+    description = folder / "description.md"
+    if not description.exists():
+        description.write_text(
+            f"## Advent of Code {year}\n\n### Day {day}: <Day Title>\n..."
         )
 
-        for part, code in [("Part 1", solution.code1), ("Part 2", solution.code2)]:
-            CONSOLE.print(f"[green]Solution for {part} in {lang}:[/green]")
-            CONSOLE.print(
-                Padding(
-                    Syntax(
-                        code.read_text(),
-                        EXTENSION[lang],
-                        line_numbers=True,
-                        word_wrap=True,
-                        indent_guides=True,
-                        tab_size=2,
-                        padding=1,
-                    ),
-                    (1, 4),
-                )
+    for part in ["part1", "part2"]:
+        fl = folder / f"{part}.py"
+        if not fl.exists():
+            code = BOILERPLATE.replace('"$(YEAR)"', str(year))
+            code = code.replace('"$(DAY)"', str(day))
+            fl.write_text(code)
+
+    print(f"Setup for year {year}, day {day} complete.")
+
+
+def info(year: int, day: int, force: bool = False) -> None:
+    def get_response(script: Path) -> Response:
+        response = run(["python3", script], capture_output=True)
+        return eval(response.stdout.decode().replace("\n", ""))
+
+    folder = SOLUTIONS / FOLDER_ID_STR.format(year=year, day=day)
+    part1 = folder / "part1.py"
+    part2 = folder / "part2.py"
+    description = folder / "description.md"
+    info = folder / "info.json"
+
+    title = description.read_text().split("\n")[2].replace("### ", "").split(": ")[1]
+    part1_response = get_response(part1)
+    part2_response = get_response(part2)
+
+    day_info = None
+    if info.exists():
+        raw = info.read_text()
+
+        if len(raw) > 0:
+            data = json.loads(raw)
+            day_info = DayInfo(**data)
+
+            if force:
+                day_info.part1.result = part1_response.value
+                day_info.part1.elapsed = part1_response.best_ms
+
+                day_info.part2.result = part2_response.value
+                day_info.part2.elapsed = part2_response.best_ms
+
+    if not day_info:
+        day_info = DayInfo(
+            year=year,
+            day=day,
+            title=title,
+            part1=DayPartInfo(
+                result=part1_response.value,
+                elapsed=part1_response.best_ms,
+            ),
+            part2=DayPartInfo(
+                result=part2_response.value,
+                elapsed=part2_response.best_ms,
+            ),
+        )
+
+    info.write_text(json.dumps(day_info.to_dict(), indent=4))
+    print(json.dumps(day_info.to_dict(), indent=4))
+
+
+def readme() -> None:
+    def get_infos() -> dict[int, list[DayInfo]]:
+        info_files_pattern = FOLDER_ID_STR.format(year=0, day=0) + "/info.json"
+        info_files_pattern = "**/" + info_files_pattern.replace("0", "*").replace(
+            "**", "*"
+        )
+        info_files = sorted(SOLUTIONS.glob(info_files_pattern))
+
+        infos = []
+        for info_file in info_files:
+            raw = info_file.read_text()
+            data = json.loads(raw)
+            infos.append(DayInfo(**data))
+
+        year_infos = {}
+        for info in infos:
+            if info.year not in year_infos:
+                year_infos[info.year] = []
+            year_infos[info.year].append(info)
+
+        return year_infos
+
+    def tabulate_info(day_info: DayInfo) -> list[str]:
+        row = []
+
+        part1_ok = day_info.part1.result == day_info.part1.expected
+        part2_ok = day_info.part2.result == day_info.part2.expected
+
+        row.append(f"Day {day_info.day}: {day_info.title}")
+        row.append("✓" if part1_ok else "✗")
+        row.append(f"{day_info.part1.elapsed:.4f} ms")
+        row.append("✓" if part2_ok else "✗")
+        row.append(f"{day_info.part2.elapsed:.4f} ms")
+
+        return row
+
+    def tabulate_missing(last_day: int, ttl_days: int) -> list[str]:
+        rows = []
+
+        for day in range(last_day + 1, ttl_days + 1):
+            row = [f"Day {day}"]
+            row.extend([""] * 4)
+            rows.append(row)
+
+        return rows
+
+    def serialize_table(year: int, table: list[list[str]]) -> str:
+        title = f"## Progress {year}"
+
+        col_len = [max(len(row[i]) for row in table) for i in range(len(table[0]))]
+        header = " | ".join([f"{col:<{col_len[i]}}" for i, col in enumerate(table[0])])
+
+        aligns = ["l", "c", "r", "c", "r"]
+        separators = []
+        for i in range(len(col_len)):
+            left_sep = ":" if aligns[i] in ["l", "c"] else "-"
+            right_sep = ":" if aligns[i] in ["r", "c"] else "-"
+
+            hifen = "-"
+            separators.append(f"{left_sep}{hifen * (col_len[i] - 2)}{right_sep}")
+
+        separator = " | ".join(separators)
+
+        body = [header, separator]
+        for row in table[1:]:
+            body.append(
+                " | ".join([f"{col:<{col_len[i]}}" for i, col in enumerate(row)])
             )
 
-    def print_progress(self, year: int, lang: Language) -> None:
-        columns = {
-            "Day": "left",
-            "Part 1": "center",
-            "Part 2": "center",
-            "Best Time": "right",
-            "Time Comp.": "left",
-            "Space Comp.": "left",
-        }
+        return f"{title}\n\n" + "\n".join(f"| {row} |" for row in body)
 
-        table = Table(
-            title=f"[green]Advent of Code {year} Progress[/green]",
-            show_lines=False,
-            box=box.MARKDOWN,
-        )
-        for col, align in columns.items():
-            table.add_column(col, justify=align)  # type: ignore
+    readme = ROOT / "README.md"
+    readme_header = ROOT / "boilerplate" / "readme_header"
 
-        success = "[green]✓[/green]"
-        fail = "[red]✕[/red]"
+    body = [readme_header.read_text()]
+    infos = get_infos()
 
-        for day in range(1, MAX_DAYS + 1):
-            day_props = self.years[year].days.get(day)
-            if day_props:
-                solution = day_props.solutions.get(lang)
-                if solution:
-                    table.add_row(
-                        f"[bold]Day {day}[/bold]: [italic]{day_props.title}[/italic]",
-                        (
-                            success
-                            if solution.result1 == day_props.expected1
-                            else fail if solution.result1 else ""
-                        ),
-                        (
-                            success
-                            if solution.result2 == day_props.expected2
-                            else fail if solution.result2 else ""
-                        ),
-                        solution.best_time_label,
-                        solution.time_complexity,
-                        solution.space_complexity,
-                    )
-            else:
-                table.add_row(f"[bold]Day {day}[/bold]", "", "", "", "", "")
+    for year, year_infos in infos.items():
+        table = [["Day", "Part 1", "Time 1", "Part 2", "Time 2"]]
+        table.extend([tabulate_info(info) for info in year_infos])
+        table.extend(tabulate_missing(len(year_infos), 25))
+        body.append(serialize_table(year, table))
 
-        CONSOLE.print(table)
-
-    def run_perftest(self, year: int, lang: Language, day: int | None = None) -> None:
-        days = range(1, MAX_DAYS + 1) if day is None else [day]
-        for day in days:
-            day_props = self.years[year].days.get(day)
-            if day_props:
-                solution = day_props.solutions.get(lang)
-                input_exists = day_props._input_path.exists()
-                if solution and input_exists:
-                    result1: str | None = None
-                    result2: str | None = None
-                    times = []
-
-                    if solution.code1.exists():
-                        result1 = run(
-                            [EXECUTABLE[lang], solution.code1],
-                            capture_output=True,
-                            text=True,
-                        ).stdout.replace("\n", "")
-
-                    if solution.code2.exists():
-                        result2 = run(
-                            [EXECUTABLE[lang], solution.code2],
-                            capture_output=True,
-                            text=True,
-                        ).stdout.replace("\n", "")
-
-                        for _ in range(10):
-                            time = timeit(
-                                lambda: run(
-                                    [EXECUTABLE[lang], solution.code2],  # type: ignore
-                                    capture_output=True,
-                                    text=True,
-                                ),
-                                number=1,
-                            )
-
-                            times.append(time)
-
-                    info = json.loads((day_props.path / "info.json").read_text())
-                    lang_info = next(
-                        (sol for sol in info["solutions"] if sol["lang"] == lang.value),
-                        None,
-                    )
-                    lang_info["results"] = {"part1": result1, "part2": result2}  # type: ignore
-                    lang_info["times"] = times  # type: ignore
-
-                    (day_props.path / "info.json").write_text(
-                        json.dumps(info, indent=4)
-                    )
-
-                    day_props.refresh()
+    readme.write_text("\n".join(body))
+    print("README.md updated.")
 
 
-def main():
-    parser = ArgumentParser(
-        description="Advent of Code CLI", formatter_class=RichHelpFormatter
+def main() -> None:
+    parser = ArgumentParser()
+
+    year_args = {
+        "type": int,
+        "choices": [2023],
+        "required": True,
+    }
+
+    day_args = {
+        "type": int,
+        "choices": range(1, 26),
+        "required": True,
+    }
+
+    subparsers = parser.add_subparsers(dest="command")
+
+    setup_parser = subparsers.add_parser("setup")
+    setup_parser.add_argument(
+        "--year",
+        "-y",
+        **year_args,
     )
-    subparsers = parser.add_subparsers(dest="command", required=True)
-
-    solution_parser = subparsers.add_parser(
-        "solution", help="Print solution", formatter_class=RichHelpFormatter
-    )
-    solution_parser.add_argument(
-        "-y", "--year", type=int, help="Year", choices=[2023], required=True
-    )
-    solution_parser.add_argument(
-        "-d",
+    setup_parser.add_argument(
         "--day",
-        type=int,
-        help="Day",
-        choices=range(1, MAX_DAYS + 1),
-        required=True,
-    )
-    solution_parser.add_argument(
-        "-l",
-        "--lang",
-        help="Language",
-        choices=[lang.value for lang in Language],
-        required=True,
-    )
-
-    progress_parser = subparsers.add_parser(
-        "progress", help="Print progress", formatter_class=RichHelpFormatter
-    )
-    progress_parser.add_argument(
-        "-y", "--year", type=int, help="Year", choices=[2023], required=True
-    )
-    progress_parser.add_argument(
-        "-l",
-        "--lang",
-        help="Language",
-        choices=[lang.value for lang in Language],
-        required=True,
-    )
-
-    perftest_parser = subparsers.add_parser(
-        "perftest", help="Run performance test", formatter_class=RichHelpFormatter
-    )
-    perftest_parser.add_argument(
-        "-y", "--year", type=int, help="Year", choices=[2023], required=True
-    )
-    perftest_parser.add_argument(
-        "-l",
-        "--lang",
-        help="Language",
-        choices=[lang.value for lang in Language],
-        required=True,
-    )
-    perftest_parser.add_argument(
         "-d",
-        "--day",
-        type=int,
-        help="Day",
-        choices=range(1, MAX_DAYS + 1),
-        required=False,
+        **day_args,
     )
+
+    info_parser = subparsers.add_parser("info")
+    info_parser.add_argument(
+        "--year",
+        "-y",
+        **year_args,
+    )
+    info_parser.add_argument(
+        "--day",
+        "-d",
+        **day_args,
+    )
+    info_parser.add_argument(
+        "--force",
+        action="store_true",
+    )
+
+    subparsers.add_parser("readme")
 
     args = parser.parse_args()
 
-    aoe = AoE()
+    if args.command == "setup":
+        setup(args.year, args.day)
 
-    if args.command == "solution":
-        aoe.print_solution(args.year, args.day, Language(args.lang))
-    elif args.command == "progress":
-        aoe.print_progress(args.year, Language(args.lang))
-    elif args.command == "perftest":
-        aoe.run_perftest(args.year, Language(args.lang), args.day)
-        aoe.print_progress(args.year, Language(args.lang))
+    elif args.command == "info":
+        info(args.year, args.day, args.force)
+
+    elif args.command == "readme":
+        readme()
 
 
 if __name__ == "__main__":

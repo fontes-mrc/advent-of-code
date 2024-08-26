@@ -1,0 +1,15 @@
+{
+    "day": 2,
+    "year": 2023,
+    "title": "Cube Conundrum",
+    "part1": {
+        "expected": 2551,
+        "result": 2551,
+        "elapsed": 0.8883
+    },
+    "part2": {
+        "expected": 62811,
+        "result": 62811,
+        "elapsed": 0.8709
+    }
+}

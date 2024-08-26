@@ -1,0 +1,15 @@
+{
+    "day": 1,
+    "year": 2023,
+    "title": "Trebuchet?!",
+    "part1": {
+        "expected": 54081,
+        "result": 54081,
+        "elapsed": 0.7694
+    },
+    "part2": {
+        "expected": 54649,
+        "result": 54649,
+        "elapsed": 2.0743
+    }
+}

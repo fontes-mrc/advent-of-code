@@ -1,0 +1,15 @@
+{
+    "day": 9,
+    "year": 2023,
+    "title": "Mirage Maintenance",
+    "part1": {
+        "expected": 1725987467,
+        "result": 1725987467,
+        "elapsed": 1.1731
+    },
+    "part2": {
+        "expected": 971,
+        "result": 971,
+        "elapsed": 1.1090
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "day": 5,
+    "year": 2023,
+    "title": "If You Give A Seed A Fertilizer",
+    "part1": {
+        "expected": 214922730,
+        "result": 214922730,
+        "elapsed": 2.8577
+    },
+    "part2": {
+        "expected": 148041808,
+        "result": 148041808,
+        "elapsed": 10.8634
+    }
+}

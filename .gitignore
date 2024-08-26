@@ -3,3 +3,4 @@
 .mypy_cache/
 input.txt
 .legacy/
+__pycache__/

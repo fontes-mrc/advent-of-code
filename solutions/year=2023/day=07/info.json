@@ -1,0 +1,15 @@
+{
+    "day": 7,
+    "year": 2023,
+    "title": "Camel Cards",
+    "part1": {
+        "expected": 247961593,
+        "result": 247961593,
+        "elapsed": 2.5382
+    },
+    "part2": {
+        "expected": 248750699,
+        "result": 248750699,
+        "elapsed": 2.7920
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "day": 10,
+    "year": 2023,
+    "title": "Pipe Maze",
+    "part1": {
+        "expected": 6682,
+        "result": 6682,
+        "elapsed": 42.2515
+    },
+    "part2": {
+        "expected": 353,
+        "result": 353,
+        "elapsed": 3040.7762
+    }
+}
